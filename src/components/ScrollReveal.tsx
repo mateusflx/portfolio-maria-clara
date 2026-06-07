@@ -45,5 +45,24 @@ export default function ScrollReveal() {
     return () => observer.disconnect();
   }, []);
 
+  // Hide the floating WhatsApp button while the hero is on screen so it never
+  // overlaps the hero CTAs; it appears once the user scrolls past the hero.
+  useEffect(() => {
+    const floatBtn = document.querySelector<HTMLElement>('.whatsapp-float');
+    const hero = document.getElementById('hero');
+    if (!floatBtn || !hero || !('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const overHero = entry.isIntersecting && entry.intersectionRatio > 0.45;
+        floatBtn.classList.toggle('whatsapp-float--hidden', overHero);
+      },
+      { threshold: [0, 0.45, 1] }
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
   return null;
 }

@@ -49,14 +49,6 @@ export default function Home() {
             <p>
               Sou Maria Clara Gama, profissional apaixonada por comunicação, marketing digital e criação de conteúdo. Trabalho com marcas para construir autoridade, gerar conexões reais e fortalecer resultados com presença visual sofisticada.
             </p>
-            <div className="hero-actions">
-              <a className="button whatsapp-link" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-                Solicitar Orçamento
-              </a>
-              <a className="button-secondary" href="#portfolio">
-                Ver Projetos
-              </a>
-            </div>
           </div>
 
           <div className="hero-visual" data-reveal>
@@ -78,6 +70,15 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="hero-actions" data-reveal>
+            <a className="button whatsapp-link" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+              Solicitar Orçamento
+            </a>
+            <a className="button-secondary" href="#portfolio">
+              Ver Projetos
+            </a>
           </div>
         </div>
       </section>

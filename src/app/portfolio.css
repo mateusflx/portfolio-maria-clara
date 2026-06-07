@@ -228,11 +228,16 @@ a {
   z-index: 1;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
-  gap: 56px;
+  grid-template-areas:
+    'copy visual'
+    'actions visual';
+  column-gap: 56px;
+  row-gap: 0;
   align-items: center;
 }
 
 .hero-copy {
+  grid-area: copy;
   max-width: 640px;
 }
 
@@ -316,6 +321,7 @@ a {
 }
 
 .hero-actions {
+  grid-area: actions;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -363,6 +369,7 @@ a {
 
 /* Hero visual */
 .hero-visual {
+  grid-area: visual;
   position: relative;
   display: grid;
   gap: 18px;
@@ -1040,7 +1047,8 @@ a {
   color: #ffffff;
   text-decoration: none;
   box-shadow: 0 18px 40px rgba(37, 211, 102, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+    opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .whatsapp-float::after {
@@ -1060,6 +1068,14 @@ a {
 .whatsapp-float:hover {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 24px 50px rgba(37, 211, 102, 0.5);
+}
+
+/* Hidden while the hero (with its own CTAs) is on screen */
+.whatsapp-float--hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8) translateY(12px);
+  pointer-events: none;
 }
 
 @keyframes wa-pulse {
@@ -1321,21 +1337,10 @@ a {
 
 /* Stack two-column layouts */
 @media (max-width: 900px) {
-  .hero-grid,
   .contact-grid,
   .grid-2,
   .about-grid {
     grid-template-columns: 1fr;
-  }
-
-  .hero {
-    min-height: auto;
-    padding: 120px 0 70px;
-  }
-
-  .hero-photo {
-    margin: 0 auto;
-    max-width: 380px;
   }
 
   .about-photo {
@@ -1354,8 +1359,8 @@ a {
   }
 }
 
-/* Phone */
-@media (max-width: 680px) {
+/* Phone / Mobile hero optimization (até 768px) */
+@media (max-width: 768px) {
   .container {
     padding: 0 18px;
   }
@@ -1366,41 +1371,96 @@ a {
   }
 
   .section {
-    padding: 68px 0;
+    padding: 64px 0;
   }
 
   .section-title {
-    margin-bottom: 36px;
+    margin-bottom: 32px;
+  }
+
+  /* Hero: single column, centered — title → foto → botões */
+  .hero {
+    min-height: auto;
+    padding: 74px 0 28px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'copy'
+      'visual'
+      'actions';
+    column-gap: 0;
+    row-gap: 14px;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hero-copy {
+    max-width: 100%;
+  }
+
+  .hero-eyebrow {
+    justify-content: center;
+    gap: 10px 14px;
+    margin-bottom: 12px;
+  }
+
+  .hero-badge {
+    padding: 6px 14px;
+    font-size: 0.76rem;
   }
 
   .hero-copy h1 {
-    font-size: clamp(2.3rem, 9vw, 3rem);
+    /* O título é longo; ~38–46px mantém poucas linhas e traz a foto p/ a primeira dobra */
+    font-size: clamp(2.35rem, 9.5vw, 2.9rem);
+    line-height: 1.1;
   }
 
-  .hero-card,
-  .card,
-  .contact-card {
-    padding: 24px;
+  /* Mantém o herói conciso para a foto entrar na primeira dobra */
+  .hero-copy p {
+    display: none;
+  }
+
+  .hero-photo {
+    width: 270px;
+    max-width: 78vw;
+    margin: 0 auto;
+  }
+
+  .hero-actions {
+    margin-top: 0;
+    width: 100%;
+    max-width: 360px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .button,
+  .button-secondary {
+    width: 100%;
   }
 
   .stats-grid {
     grid-template-columns: 1fr;
   }
 
-  .hero-actions {
-    width: 100%;
+  .card,
+  .contact-card {
+    padding: 24px;
   }
 
-  .button,
-  .button-secondary {
-    flex: 1;
-    width: 100%;
-  }
-
+  /* WhatsApp flutuante: menor e acima da barra inferior, sem cobrir os CTAs */
   .whatsapp-float {
     right: 16px;
-    bottom: 16px;
-    padding: 13px 18px;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    width: 52px;
+    height: 52px;
+  }
+
+  .whatsapp-float-icon {
+    width: 28px;
+    height: 28px;
   }
 }
 
